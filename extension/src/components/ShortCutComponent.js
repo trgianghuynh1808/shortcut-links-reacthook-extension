@@ -1,0 +1,85 @@
+import React, { Fragment, useState } from "react";
+
+import useShortcutLinks from "../hooks/useShortcutLinks";
+
+const ShortCutComponent = () => {
+  const [
+    shortcutLinks,
+    addShortcutLink,
+    removeShortcutLink,
+  ] = useShortcutLinks();
+  const [curInput, setCurInput] = useState("");
+
+  if (!shortcutLinks) return <Fragment />;
+
+  console.log(shortcutLinks.length);
+
+  return (
+    <Fragment>
+      <div className="short-cut-wrp">
+        <div className="row justify-content-center">
+          <div className="col-10">
+            <div className="text-success text-capitalize">
+              Shortcut Links Extension
+            </div>
+          </div>
+        </div>
+        <div className="input-group mb-3 mt-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter Link"
+            onChange={(event) => {
+              setCurInput(event.target.value);
+            }}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                addShortcutLink(curInput);
+                setCurInput("");
+              }
+            }}
+            value={curInput}
+          />
+        </div>
+        <div className="mt-2">
+          <ul className="list">
+            {shortcutLinks.length <= 0 ? (
+              <div>No things!</div>
+            ) : (
+              shortcutLinks.map((link, index) => {
+                return (
+                  <li key={index}>
+                    <a href={link.data} target="_blank">
+                      {link.data}
+                    </a>
+                    <span
+                      className="ml-2 text-danger cursor-pointer"
+                      onClick={() => {
+                        removeShortcutLink(link.id);
+                      }}
+                    >
+                      x
+                    </span>
+                  </li>
+                );
+              })
+            )}
+          </ul>
+        </div>
+      </div>
+
+      <style jsx="true">{`
+        .short-cut-wrp {
+          padding: 30px;
+        }
+
+        .short-cut-wrp ul.list {
+          list-style-type: square;
+          padding: 0px;
+        }
+      `}</style>
+    </Fragment>
+  );
+};
+
+export default ShortCutComponent;
