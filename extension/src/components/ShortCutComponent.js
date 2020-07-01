@@ -67,6 +67,10 @@ const ShortCutComponent = () => {
           </ul>
         </div>
       </div>
+      <div className="text-center font-12">
+        Press key <span className="font-weight-bold">Ctrl+Shift+F</span> to
+        ON/OFF
+      </div>
 
       <style jsx="true">{`
         .short-cut-wrp {
