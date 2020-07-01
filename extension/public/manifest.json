@@ -3,7 +3,8 @@
   "version": "1.0",
   "manifest_version": 2,
   "browser_action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_icon": "logo.png"
   },
   "content_security_policy": "script-src 'self' 'sha256-p5hOtlld76OubQRjuoOzFkH1phfMCtQyYciqJYR0hgk='; object-src 'self'",
   "commands": {
