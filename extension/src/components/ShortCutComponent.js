@@ -18,8 +18,8 @@ const ShortCutComponent = () => {
     <Fragment>
       <div className="short-cut-wrp">
         <div className="row justify-content-center">
-          <div className="col-10">
-            <div className="text-success text-capitalize">
+          <div className="col-12">
+            <div className="text-success text-capitalize text-center">
               Shortcut Links Extension
             </div>
           </div>
