@@ -1,0 +1,9 @@
+{
+  "defaultShortcutLinks": [
+    "1_https://www.facebook.com/",
+    "2_https://zingmp3.vn/"
+  ],
+  "info": {
+    "nameLocalStorage": "shortCutLinks"
+  }
+}
