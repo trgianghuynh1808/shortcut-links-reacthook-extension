@@ -1,4 +1,4 @@
-# ShortcutLinks-ReactHook-ChormeExtension
+# ShortcutLinks-ReactHook-Extension
 
 
 **Description:**
