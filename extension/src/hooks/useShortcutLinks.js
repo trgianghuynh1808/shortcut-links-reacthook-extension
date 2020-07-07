@@ -7,7 +7,7 @@ const updateData = (newData, setShortcutLink) => {
   setShortcutLink(newData);
   setLocal(
     newData.map((item) => {
-      return `${item.id}_${item.data}`;
+      return `${item.id}_${item.data}_${item.title}`;
     })
   );
 };
@@ -16,17 +16,14 @@ const useShortcutLinks = () => {
   const [shortcutLinks, setShortcutLink] = useState(getLocal());
 
   const addShortcutLink = (curShortcutLink) => {
-    let tempCurShortcutLink = curShortcutLink;
-    if (!tempCurShortcutLink.includes("https://")) {
-      tempCurShortcutLink = "https://" + curShortcutLink;
-    }
     const tempCurId = uuidv4();
 
     const newData = [
       ...shortcutLinks,
       {
         id: tempCurId,
-        data: tempCurShortcutLink,
+        data: curShortcutLink,
+        title: "",
       },
     ];
 
@@ -37,12 +34,29 @@ const useShortcutLinks = () => {
     const newData = shortcutLinks.filter((item) => {
       return item.id !== idShortcutLink;
     });
-    console.log(newData);
 
     updateData(newData, setShortcutLink);
   };
 
-  return [shortcutLinks, addShortcutLink, removeShortcutLink];
+  const addTitleShortcutLink = (id, title) => {
+    const newData = [...shortcutLinks].map((item) => {
+      if (item.id !== id) return item;
+
+      return {
+        ...item,
+        title,
+      };
+    });
+
+    updateData(newData, setShortcutLink);
+  };
+
+  return [
+    shortcutLinks,
+    addShortcutLink,
+    removeShortcutLink,
+    addTitleShortcutLink,
+  ];
 };
 
 export default useShortcutLinks;
