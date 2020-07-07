@@ -24,21 +24,31 @@ const ShortCutComponent = () => {
             </div>
           </div>
         </div>
-        <div className="input-group mb-3 mt-3">
+        <div className="input-group mb-3 mt-3 ">
           <input
+            id="input-link"
             type="text"
             className="form-control"
-            placeholder="Enter Link"
+            placeholder="Paste Link"
             onChange={(event) => {
               setCurInput(event.target.value);
             }}
-            onKeyPress={(event) => {
-              if (event.key === "Enter") {
+            onPaste={(event) => {
+              const curContent = (
+                event.clipboardData || window.clipboardData
+              ).getData("text");
+              setCurInput(curContent);
+            }}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
                 addShortcutLink(curInput);
                 setCurInput("");
+              } else {
+                e.preventDefault();
               }
             }}
             value={curInput}
+            maxLength={0}
           />
         </div>
         <div className="mt-2">

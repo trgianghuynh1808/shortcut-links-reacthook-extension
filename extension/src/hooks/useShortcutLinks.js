@@ -16,17 +16,13 @@ const useShortcutLinks = () => {
   const [shortcutLinks, setShortcutLink] = useState(getLocal());
 
   const addShortcutLink = (curShortcutLink) => {
-    let tempCurShortcutLink = curShortcutLink;
-    if (!tempCurShortcutLink.includes("https://")) {
-      tempCurShortcutLink = "https://" + curShortcutLink;
-    }
     const tempCurId = uuidv4();
 
     const newData = [
       ...shortcutLinks,
       {
         id: tempCurId,
-        data: tempCurShortcutLink,
+        data: curShortcutLink,
       },
     ];
 
@@ -37,7 +33,6 @@ const useShortcutLinks = () => {
     const newData = shortcutLinks.filter((item) => {
       return item.id !== idShortcutLink;
     });
-    console.log(newData);
 
     updateData(newData, setShortcutLink);
   };
