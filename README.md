@@ -11,3 +11,11 @@ This is an extension. Here users can create shortcuts to links. It has the same 
 - Create shortcut links by text input.
 - Add, delete short link item.
 
+**Version 1.1:**
+- Update UI.
+- Fix bug for version 1.0.
+- Implement "Add title" feature.
+
+**Link Dowload on Firefox:** https://addons.mozilla.org/vi/firefox/addon/shortcut-links-extension/
+
+**Link Demo:** https://youtu.be/nsiNGd05vSs
