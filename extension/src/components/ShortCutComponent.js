@@ -1,25 +1,44 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 import useShortcutLinks from "../hooks/useShortcutLinks";
+import { makeBriefShortLink, getLocal } from "../libs";
+
+const initStateShowEditInputs = () => {
+  const data = getLocal();
+
+  return data.map((item) => {
+    return {
+      id: item.id,
+      isShowEditInput: false,
+    };
+  });
+};
 
 const ShortCutComponent = () => {
   const [
     shortcutLinks,
     addShortcutLink,
     removeShortcutLink,
+    addTitleShortcutLink,
   ] = useShortcutLinks();
   const [curInput, setCurInput] = useState("");
+  const [showEditInputs, setShowEditInputs] = useState(
+    initStateShowEditInputs()
+  );
+  const [curEditInput, setCurEditInput] = useState("");
+
+  useEffect(() => {
+    setShowEditInputs(initStateShowEditInputs());
+  }, [shortcutLinks]);
 
   if (!shortcutLinks) return <Fragment />;
-
-  console.log(shortcutLinks.length);
 
   return (
     <Fragment>
       <div className="short-cut-wrp">
         <div className="row justify-content-center">
           <div className="col-12">
-            <div className="text-success text-capitalize text-center">
+            <div className="text-success text-uppercase text-center">
               Shortcut Links Extension
             </div>
           </div>
@@ -52,29 +71,101 @@ const ShortCutComponent = () => {
           />
         </div>
         <div className="mt-2">
-          <ul className="list">
-            {shortcutLinks.length <= 0 ? (
-              <div>No things!</div>
-            ) : (
-              shortcutLinks.map((link, index) => {
-                return (
-                  <li key={index}>
-                    <a href={link.data} target="_blank">
-                      {link.data}
-                    </a>
-                    <span
-                      className="ml-2 text-danger cursor-pointer"
-                      onClick={() => {
-                        removeShortcutLink(link.id);
-                      }}
-                    >
-                      x
-                    </span>
-                  </li>
-                );
-              })
-            )}
-          </ul>
+          <table className="table">
+            <thead className="text-center head-row">
+              <tr>
+                <th scope="col">Shortcut Links</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="text-left">
+              {shortcutLinks.length <= 0 ? (
+                <tr className="text-center">
+                  <th scope="row" colSpan="2">
+                    No things!
+                  </th>
+                </tr>
+              ) : (
+                shortcutLinks.map((link, index) => {
+                  const curShowEditInputs = showEditInputs.find(
+                    (item) => item.id === link.id
+                  );
+
+                  return (
+                    <tr key={index}>
+                      <th scope="row">
+                        {curShowEditInputs &&
+                        curShowEditInputs.isShowEditInput === true ? (
+                          <input
+                            type="text"
+                            placeholder="Enter title"
+                            className="edit-input"
+                            value={curEditInput}
+                            onChange={(event) => {
+                              setCurEditInput(event.target.value);
+                            }}
+                            onKeyPress={(e) => {
+                              if (e.key === "Enter") {
+                                addTitleShortcutLink(link.id, curEditInput);
+                                setCurEditInput("");
+                              }
+                            }}
+                          />
+                        ) : (
+                          <a href={link.data} target="_blank">
+                            {link.title || makeBriefShortLink(link.data)}
+                          </a>
+                        )}
+                      </th>
+                      <th className="text-center">
+                        <img
+                          src={`${process.env.PUBLIC_URL}/icons/trash-icon.png`}
+                          className=" mr-2 text-danger cursor-pointer"
+                          onClick={() => {
+                            removeShortcutLink(link.id);
+                          }}
+                        />
+
+                        <img
+                          src={`${process.env.PUBLIC_URL}/icons/edit-icon.png`}
+                          className=" ml-2 text-danger cursor-pointer"
+                          onClick={() => {
+                            //clear content input
+                            setCurEditInput("");
+
+                            const curEditInput = showEditInputs.find(
+                              (item) => item.id === link.id
+                            );
+
+                            const newShowEditInputs = [...showEditInputs].map(
+                              (item) => {
+                                if (item.id !== curEditInput.id)
+                                  return {
+                                    id: item.id,
+                                    isShowEditInput: false,
+                                  };
+
+                                return {
+                                  id: item.id,
+                                  isShowEditInput: !curEditInput.isShowEditInput,
+                                };
+                              }
+                            );
+
+                            setShowEditInputs(newShowEditInputs);
+                          }}
+                          height={16}
+                          width={16}
+                        />
+                      </th>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+
+          <ul className="list"></ul>
         </div>
       </div>
       <div className="text-center font-12">
@@ -90,6 +181,16 @@ const ShortCutComponent = () => {
         .short-cut-wrp ul.list {
           list-style-type: square;
           padding: 0px;
+        }
+
+        .short-cut-wrp .head-row {
+          background: goldenrod;
+          color: white;
+        }
+
+        .short-cut-wrp .edit-input {
+          height: 19px;
+          width: 170px;
         }
       `}</style>
     </Fragment>
