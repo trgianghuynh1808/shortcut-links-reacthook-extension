@@ -112,7 +112,11 @@ const ShortCutComponent = () => {
                             }}
                           />
                         ) : (
-                          <a href={link.data} target="_blank">
+                          <a
+                            href={link.data}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {link.title || makeBriefShortLink(link.data)}
                           </a>
                         )}
@@ -124,11 +128,13 @@ const ShortCutComponent = () => {
                           onClick={() => {
                             removeShortcutLink(link.id);
                           }}
+                          alt="trash-icon"
                         />
 
                         <img
                           src={`${process.env.PUBLIC_URL}/icons/edit-icon.png`}
                           className=" ml-2 text-danger cursor-pointer"
+                          alt="edit-icon"
                           onClick={() => {
                             //clear content input
                             setCurEditInput("");
