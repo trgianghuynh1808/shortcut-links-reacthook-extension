@@ -7,7 +7,7 @@ const updateData = (newData, setShortcutLink) => {
   setShortcutLink(newData);
   setLocal(
     newData.map((item) => {
-      return `${item.id}_${item.data}_${item.title}`;
+      return `${item.id}_*_${item.data}_*_${item.title}`;
     })
   );
 };

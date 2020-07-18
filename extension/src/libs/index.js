@@ -18,7 +18,7 @@ export const getLocal = () => {
   if (dataString.length <= 1) return [];
 
   return dataString.split(",").map((data) => {
-    const [id, dataItem, titleItem] = data.split("_");
+    const [id, dataItem, titleItem] = data.split("_*_");
 
     return {
       id,
