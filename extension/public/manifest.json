@@ -1,6 +1,6 @@
 {
   "name": "Shortcut Links Extension",
-  "version": "1.2",
+  "version": "1.3",
   "description": "You can create shortcuts to links. It has the same function as with chrome's 'bookmarks'.",
   "manifest_version": 2,
   "browser_action": {

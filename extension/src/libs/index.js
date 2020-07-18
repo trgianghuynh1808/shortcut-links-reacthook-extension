@@ -11,7 +11,8 @@ export const setLocal = (data) => {
 
 export const getLocal = () => {
   if (!checkExistsLocal()) {
-    return setLocal([]);
+    setLocal([]);
+    return [];
   }
 
   const dataString = window.localStorage.getItem(nameItemLocal);
