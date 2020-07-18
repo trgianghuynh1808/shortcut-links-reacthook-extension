@@ -16,6 +16,14 @@ This is an extension. Here users can create shortcuts to links. It has the same 
 - Fix bug for version 1.0.
 - Implement "Add title" feature.
 
+**Version 1.2 1.3:**
+- Fix bugs in the previous version:
+
+  + Wrong save data with youtube links.
+  + Don't show UI when init times.
+  
+- Additional instructions for use.
+
 **Link Dowload on Firefox:** https://addons.mozilla.org/vi/firefox/addon/shortcut-links-extension/
 
 **Link Demo:** https://youtu.be/nsiNGd05vSs
