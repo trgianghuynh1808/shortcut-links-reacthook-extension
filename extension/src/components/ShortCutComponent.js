@@ -176,7 +176,10 @@ const ShortCutComponent = () => {
       </div>
       <div className="text-center font-12">
         Press key <span className="font-weight-bold">Ctrl+Shift+F</span> to
-        ON/OFF
+        ON/OFF.
+      </div>
+      <div className="text-center font-12">
+        Press key <span className="font-weight-bold">Enter</span> to confirm.
       </div>
 
       <style jsx="true">{`
