@@ -6,7 +6,7 @@ import { getLocal, setLocal } from "../libs";
 const updateData = (newData, setShortcutLink) => {
   setShortcutLink(newData);
   setLocal(
-    newData.map((item) => {
+    newData.map(item => {
       return `${item.id}_*_${item.data}_*_${item.title}`;
     })
   );
@@ -15,7 +15,11 @@ const updateData = (newData, setShortcutLink) => {
 const useShortcutLinks = () => {
   const [shortcutLinks, setShortcutLink] = useState(getLocal());
 
-  const addShortcutLink = (curShortcutLink) => {
+  const initShortcutLink = () => {
+    setShortcutLink(getLocal());
+  };
+
+  const addShortcutLink = curShortcutLink => {
     const tempCurId = uuidv4();
 
     const newData = [
@@ -23,15 +27,15 @@ const useShortcutLinks = () => {
       {
         id: tempCurId,
         data: curShortcutLink,
-        title: "",
-      },
+        title: ""
+      }
     ];
 
     updateData(newData, setShortcutLink);
   };
 
-  const removeShortcutLink = (idShortcutLink) => {
-    const newData = shortcutLinks.filter((item) => {
+  const removeShortcutLink = idShortcutLink => {
+    const newData = shortcutLinks.filter(item => {
       return item.id !== idShortcutLink;
     });
 
@@ -39,12 +43,12 @@ const useShortcutLinks = () => {
   };
 
   const addTitleShortcutLink = (id, title) => {
-    const newData = [...shortcutLinks].map((item) => {
+    const newData = [...shortcutLinks].map(item => {
       if (item.id !== id) return item;
 
       return {
         ...item,
-        title,
+        title
       };
     });
 
@@ -53,9 +57,10 @@ const useShortcutLinks = () => {
 
   return [
     shortcutLinks,
+    initShortcutLink,
     addShortcutLink,
     removeShortcutLink,
-    addTitleShortcutLink,
+    addTitleShortcutLink
   ];
 };
 

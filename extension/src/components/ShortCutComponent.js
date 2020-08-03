@@ -1,15 +1,20 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 import useShortcutLinks from "../hooks/useShortcutLinks";
-import { makeBriefShortLink, getLocal } from "../libs";
+import {
+  makeBriefShortLink,
+  getLocal,
+  getDataStringLocal,
+  setLocal
+} from "../libs";
 
 const initStateShowEditInputs = () => {
   const data = getLocal();
 
-  return data.map((item) => {
+  return data.map(item => {
     return {
       id: item.id,
-      isShowEditInput: false,
+      isShowEditInput: false
     };
   });
 };
@@ -17,9 +22,10 @@ const initStateShowEditInputs = () => {
 const ShortCutComponent = () => {
   const [
     shortcutLinks,
+    initShortcutLink,
     addShortcutLink,
     removeShortcutLink,
-    addTitleShortcutLink,
+    addTitleShortcutLink
   ] = useShortcutLinks();
   const [curInput, setCurInput] = useState("");
   const [showEditInputs, setShowEditInputs] = useState(
@@ -33,14 +39,74 @@ const ShortCutComponent = () => {
 
   if (!shortcutLinks) return <Fragment />;
 
+  const handleDownTxtFile = () => {
+    const element = document.createElement("a");
+    const file = new Blob([getDataStringLocal()], {
+      type: "text/plain"
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "export-data.txt";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
+  const handleImportTxtFile = e => {
+    e.preventDefault();
+    const reader = new FileReader();
+    reader.onload = async e => {
+      const data = e.target.result;
+      setLocal(data);
+      initShortcutLink();
+    };
+    reader.readAsText(e.target.files[0]);
+  };
+
+  const handleQuestion = () => {
+    alert("test hehe");
+  };
+
   return (
     <Fragment>
       <div className="short-cut-wrp">
-        <div className="row justify-content-center">
-          <div className="col-12">
+        <div className="row justify-content-between">
+          <div className="col-10">
             <div className="text-success text-uppercase text-center">
               Shortcut Links Extension
             </div>
+          </div>
+          <div className="col-1">
+            <img
+              src={`${process.env.PUBLIC_URL}/icons/export-icon.png`}
+              className=" mr-3 cursor-pointer"
+              onClick={handleDownTxtFile}
+              alt="export-icon"
+            />
+
+            <span className="">
+              <label htmlFor="input-file">
+                <img
+                  src={`${process.env.PUBLIC_URL}/icons/import-icon.png`}
+                  className=" mr-3 cursor-pointer"
+                  alt="import-icon"
+                />
+              </label>
+
+              <input
+                className="d-none"
+                id="input-file"
+                type="file"
+                onChange={event => handleImportTxtFile(event)}
+              />
+            </span>
+
+            <img
+              src={`${process.env.PUBLIC_URL}/icons/question-icon.png`}
+              className="cursor-pointer"
+              onClick={handleQuestion}
+              alt="question-icon"
+              height="20"
+              width="20"
+            />
           </div>
         </div>
         <div className="input-group mb-3 mt-3 ">
@@ -49,16 +115,16 @@ const ShortCutComponent = () => {
             type="text"
             className="form-control"
             placeholder="Paste Link"
-            onChange={(event) => {
+            onChange={event => {
               setCurInput(event.target.value);
             }}
-            onPaste={(event) => {
+            onPaste={event => {
               const curContent = (
                 event.clipboardData || window.clipboardData
               ).getData("text");
               setCurInput(curContent);
             }}
-            onKeyPress={(e) => {
+            onKeyPress={e => {
               if (e.key === "Enter") {
                 addShortcutLink(curInput);
                 setCurInput("");
@@ -88,7 +154,7 @@ const ShortCutComponent = () => {
               ) : (
                 shortcutLinks.map((link, index) => {
                   const curShowEditInputs = showEditInputs.find(
-                    (item) => item.id === link.id
+                    item => item.id === link.id
                   );
 
                   return (
@@ -101,10 +167,10 @@ const ShortCutComponent = () => {
                             placeholder="Enter title"
                             className="edit-input"
                             value={curEditInput}
-                            onChange={(event) => {
+                            onChange={event => {
                               setCurEditInput(event.target.value);
                             }}
-                            onKeyPress={(e) => {
+                            onKeyPress={e => {
                               if (e.key === "Enter") {
                                 addTitleShortcutLink(link.id, curEditInput);
                                 setCurEditInput("");
@@ -140,20 +206,20 @@ const ShortCutComponent = () => {
                             setCurEditInput("");
 
                             const curEditInput = showEditInputs.find(
-                              (item) => item.id === link.id
+                              item => item.id === link.id
                             );
 
                             const newShowEditInputs = [...showEditInputs].map(
-                              (item) => {
+                              item => {
                                 if (item.id !== curEditInput.id)
                                   return {
                                     id: item.id,
-                                    isShowEditInput: false,
+                                    isShowEditInput: false
                                   };
 
                                 return {
                                   id: item.id,
-                                  isShowEditInput: !curEditInput.isShowEditInput,
+                                  isShowEditInput: !curEditInput.isShowEditInput
                                 };
                               }
                             );
@@ -170,8 +236,6 @@ const ShortCutComponent = () => {
               )}
             </tbody>
           </table>
-
-          <ul className="list"></ul>
         </div>
       </div>
       <div className="text-center font-12">
@@ -181,7 +245,6 @@ const ShortCutComponent = () => {
       <div className="text-center font-12">
         Press key <span className="font-weight-bold">Enter</span> to confirm.
       </div>
-
       <style jsx="true">{`
         .short-cut-wrp {
           padding: 30px;

@@ -29,6 +29,13 @@ export const getLocal = () => {
   });
 };
 
+export const getDataStringLocal = () => {
+  const dataString = window.localStorage.getItem(nameItemLocal);
+  if (dataString.length <= 1) return "";
+
+  return dataString;
+};
+
 export const makeBriefShortLink = (shortLink) => {
   const MAX_LENGTH_STRING = 25;
 
